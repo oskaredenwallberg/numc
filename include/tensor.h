@@ -17,4 +17,6 @@ typedef struct {
     Scalar *data;
 } Tensor;
 
+extern double tensor_index(Tensor *pT, int *index);     //index is array of indicies
+
 #endif
