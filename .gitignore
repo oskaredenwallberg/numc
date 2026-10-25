@@ -1,8 +1,7 @@
 # Custom
 .vscode/
 .depr/
-
-
+*.DS_store
 
 # Prerequisites
 *.d
