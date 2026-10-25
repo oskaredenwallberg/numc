@@ -1,14 +1,16 @@
-//printing tensor in terminal
+#ifndef TENSOR_IO_H
+#define TENSOR_IO_H
 
-extern void print_tensor_shape(Tensor *pT);
-extern void print_tensor_dtype(Tensor *pT);
-extern void print_tensor_metadata(Tensor *pT);
-extern void print_tensor_values_1d(Number values[], Uint size);
-extern void print_tensor(Tensor *pT);
+#include "./tensor.h"
 
-extern void print_1d_array(Uint* array, Uint size);
+// printing
+void tensor_print(const Tensor *t);
+void tensor_print_data(const Tensor *t);
+void tensor_print_shape(const Tensor *t);
+// extern void print_1d_array(Uint* array, Uint size);
 
-//saving and loading tensors (serializing)
+// save and load
+// void save_tensor(char* path, Tensor *t);
+// void load_tensor(char* path, Tensor *t);
 
-extern void save_tensor(char* path, Tensor *pT);
-extern void load_tensor(char* path, Tensor *pT);
+#endif

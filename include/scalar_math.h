@@ -8,15 +8,15 @@
 #define PI      3.14159265358979323846  // Pi, `π`
 
 // scalar operations
-extern Scalar scalar_pdf_gaussian(Scalar mu, Scalar sigmoid, Scalar x);
+Scalar scalar_pdf_gaussian(Scalar mu, Scalar sigmoid, Scalar x);
 
-extern Scalar scalar_cos(Scalar x);
-extern Scalar scalar_sin(Scalar x);
+Scalar scalar_cos(Scalar x);
+Scalar scalar_sin(Scalar x);
 
-extern Scalar scalar_ln(Scalar x);
-extern Scalar scalar_exp(Scalar x);
-extern Scalar scalar_abs(Scalar x);
-extern Scalar scalar_power_n(Scalar x, int n);
+Scalar scalar_ln(Scalar x);
+Scalar scalar_exp(Scalar x);
+Scalar scalar_abs(Scalar x);
+Scalar scalar_power_n(Scalar x, int n);
 
 
 #endif

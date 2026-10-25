@@ -1,8 +1,15 @@
-//reduction operations
-extern void tensor_min(Tensor *pT, int axis, Tensor *pT_res);
-extern void tensor_max(Tensor *pT, int axis);
-extern void tensor_sum(Tensor *pT, int axis);
-extern void tensor_mean(Tensor *pT, int axis);
-extern void tensor_stddev(Tensor *pT, int axis);
-extern void tensor_variance(Tensor *pT, int axis);
-extern void tensor_median(Tensor *pT, int axis);
+#ifndef TENSOR_REDUCE_H
+#define TENSOR_REDUCE_H
+
+#include "../tensor.h"
+
+// reduction
+Tensor tensor_min(const Tensor *t, Index axis);
+Tensor tensor_max(const Tensor *t, Index axis);
+Tensor tensor_sum(const Tensor *t, Index axis);
+Tensor tensor_std(const Tensor *t, Index axis);
+Tensor tensor_var(const Tensor *t, Index axis);
+Tensor tensor_mean(const Tensor *t, Index axis);
+Tensor tensor_median(const Tensor *t, Index axis);
+
+#endif

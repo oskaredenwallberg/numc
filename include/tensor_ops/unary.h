@@ -1,6 +1,17 @@
-//unary operations (inplace)
-extern void tensor_abs(Tensor *pT);
-extern void tensor_sin(Tensor *pT);
-extern void tensor_cos(Tensor *pT);
-extern void tensor_exp(Tensor *pT, int pow);
-extern void tensor_log(Tensor *pT);
+#ifndef TENSOR_UNARY_H
+#define TENSOR_UNARY_H
+
+#include "../tensor.h"
+
+// unary ops
+Tensor tensor_abs(const Tensor *t);
+Tensor tensor_sin(const Tensor *t);
+Tensor tensor_cos(const Tensor *t);
+Tensor tensor_exp(const Tensor *t);
+Tensor tensor_log(const Tensor *t);
+Tensor tensor_pow(const Tensor *t, int pow);
+
+// inplace
+// ...
+
+#endif
