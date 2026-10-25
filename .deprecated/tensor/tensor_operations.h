@@ -26,17 +26,17 @@ extern void tensor_div(Tensor *pT_1, Tensor *pT_2, Tensor *pT_res);
 extern void tensor_abs(Tensor *pT);
 extern void tensor_sin(Tensor *pT);
 extern void tensor_cos(Tensor *pT);
-extern void tensor_exp(Tensor *pT);
+extern void tensor_exp(Tensor *pT, int pow);
 extern void tensor_log(Tensor *pT);
 
 //reduction operations
-extern double tensor_min(Tensor *pT, int axis);
-extern double tensor_max(Tensor *pT, int axis);
-extern double tensor_sum(Tensor *pT, int axis);
-extern double tensor_mean(Tensor *pT, int axis);
-extern double tensor_stddev(Tensor *pT, int axis);
-extern double tensor_variance(Tensor *pT, int axis);
-extern double tensor_median(Tensor *pT, int axis);
+extern void tensor_min(Tensor *pT, int axis, Tensor *pT_res);
+extern void tensor_max(Tensor *pT, int axis);
+extern void tensor_sum(Tensor *pT, int axis);
+extern void tensor_mean(Tensor *pT, int axis);
+extern void tensor_stddev(Tensor *pT, int axis);
+extern void tensor_variance(Tensor *pT, int axis);
+extern void tensor_median(Tensor *pT, int axis);
 
 //matrix operations
 extern void matrix_multiplication(Tensor *pA, Tensor *pB, Tensor *pC);
