@@ -18,5 +18,4 @@ Scalar scalar_exp(Scalar x);
 Scalar scalar_abs(Scalar x);
 Scalar scalar_power_n(Scalar x, int n);
 
-
 #endif

@@ -1,7 +1,7 @@
 #ifndef TENSOR_IO_H
 #define TENSOR_IO_H
 
-#include "./tensor.h"
+#include "tensor.h"
 
 // printing
 void tensor_print(const Tensor *t);

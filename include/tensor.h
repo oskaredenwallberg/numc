@@ -12,10 +12,10 @@ typedef double Scalar;      // double-precision floating point, 64 bit
 // typedef ptrdiff_t Stride;   // signed integer offsets, 64 bit
 
 typedef struct {
-    Size   ndim;
-    Size   size;
-    Size   *shape;
     Scalar *data;
+    Size   *shape;
+    Size   size;
+    Size   ndim;
     // Stride *strides;
 } Tensor;
 
@@ -23,6 +23,7 @@ typedef struct {
 Tensor tensor_array(const Scalar data[], const Size shape[], Size ndim);
 Tensor tensor_zeros(const Size shape[], Size ndim);
 Tensor tensor_ones(const Size shape[], Size ndim);
+Tensor tensor_full(const Size shape[], Size ndim, Scalar value);
 
 // release
 void tensor_free(Tensor *t);  // free allocated data and reset members
