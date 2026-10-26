@@ -13,7 +13,7 @@ Scalar scalar_pdf_gaussian(Scalar mu, Scalar sigmoid, Scalar x);
 Scalar scalar_cos(Scalar x);
 Scalar scalar_sin(Scalar x);
 
-Scalar scalar_ln(Scalar x);
+Scalar scalar_log(Scalar x);
 Scalar scalar_exp(Scalar x);
 Scalar scalar_abs(Scalar x);
 Scalar scalar_power_n(Scalar x, int n);
