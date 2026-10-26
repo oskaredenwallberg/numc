@@ -1,36 +1,31 @@
-# Compiler and flags
-# The compiler will look for header fiels in 'include/' and 'include/tensor' directory. 
 CC = gcc
-CFLAGS = -Iinclude -Iinclude/tensor -Wall -Wextra -g -Wno-missing-braces
+CFLAGS = -std=c11 -Wall -Wextra -g -O0 -MMD -MP
+CPPFLAGS = -Iinclude
 
-# Find all .c files in src and its subdirectories
-# Replace .c with .o for object files
-SRC = $(wildcard src/*.c src/**/*.c)	
-OBJ = $(SRC:.c=.o)						
+.DEFAULT_GOAL := all
 
-# Final executable name
-EXEC = NumC
+SRC = $(wildcard src/*.c src/tensor_ops/*.c)
+OBJ = $(SRC:.c=.o)
+DEP = $(OBJ:.o=.d)
+EXEC = numc
 
-# Default target for building the executable
-# Usage: `make`
+$(EXEC): $(OBJ)  # target: prerequisites
+	$(CC) $^ -o $@
+
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+-include $(DEP)  # header dependencies
+
 all: $(EXEC)
 
-# Linking the executable (target: prerequisite)
-# $(EXEC) is dependent on all object files in $(OBJ)
-$(EXEC): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+run: $(EXEC)
+	./$(EXEC)
 
-# Compile each .c file to an .o file
-%.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-# Clean up command to remove object files and executable file
-# Usage: `make clean`
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(OBJ) $(DEP) $(EXEC)
 
-# Phony targets to indicate 'all' and 'clean' are not files
-.PHONY: all clean
+.PHONY: all run clean
 
 
 
