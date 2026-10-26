@@ -1,7 +1,7 @@
 #ifndef TENSOR_UNARY_H
 #define TENSOR_UNARY_H
 
-#include "../tensor.h"
+#include "tensor.h"
 
 // unary ops
 Tensor tensor_abs(const Tensor *t);

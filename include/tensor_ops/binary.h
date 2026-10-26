@@ -1,7 +1,7 @@
 #ifndef TENSOR_BINARY_H
 #define TENSOR_BINARY_H
 
-#include "../tensor.h"
+#include "tensor.h"
 
 // binary ops (w/ broadcasting)
 Tensor tensor_add(const Tensor *t1, const Tensor *t2);

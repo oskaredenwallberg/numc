@@ -1,7 +1,7 @@
 #ifndef TENSOR_REDUCE_H
 #define TENSOR_REDUCE_H
 
-#include "../tensor.h"
+#include "tensor.h"
 
 // reduction
 Tensor tensor_min(const Tensor *t, Index axis);

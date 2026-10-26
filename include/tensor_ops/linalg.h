@@ -1,7 +1,7 @@
 #ifndef TENSOR_LINALG_H
 #define TENSOR_LINALG_H
 
-#include "../tensor.h"
+#include "tensor.h"
 
 // matrix ops
 Tensor matrix_mul(const Tensor *a, Tensor *b);
