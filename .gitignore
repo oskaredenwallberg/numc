@@ -3,6 +3,10 @@
 .depr/
 *.DS_store
 
+# Exec
+numc
+test_numc
+
 # Prerequisites
 *.d
 
