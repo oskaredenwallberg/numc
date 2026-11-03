@@ -7,82 +7,66 @@
 
 #include "scalar_math.h"
 
+
 Scalar scalar_abs(Scalar x) {
     return (x < 0) ? -x : x;
 }
 
-
-static inline Scalar maclaurin_ln_xp1(Scalar x, Size iter) {
+Scalar maclaurin_ln_xp1_div_xm1(Scalar x, Size iter) {
     assert(iter >= 1);
     assert((-0.5 < x) && (x < 0.5));
-    Scalar ln_xp1 = 0.0;
-    Scalar xn = 1.0;
-    Scalar sign = -1.0;
-    for (Size i = 1.0; i < iter; i++) {
-        sign *= -1;
-        xn *= x;
-        ln_xp1 += sign * 1.0/i * xn;
+    Scalar ln_xp1_div_xm1 = 0.0;
+    Scalar xn = x;
+    Scalar x2 = x*x;
+    for (Size i = 1; i < 2*iter; i+=2) {
+        ln_xp1_div_xm1 += xn/i;
+        xn *= x2;
     }
-    return ln_xp1;
+    return 2.0*ln_xp1_div_xm1;
+}
+
+static inline Size leading_zero_count(uint64_t bits) {
+    Size count = 0;
+    for (Size i = 64; i-- > 0;) {
+        if (bits >> i == 0b1) break;
+        count++;
+    }
+    return count;
 }
 
 Scalar scalar_log(Scalar x) {
-    // ln(x) = ln(m2^k) = ln(m) + ln(2^k) = ln(m) + kln(2)
-    // Approximate ln(2) once really good
-    // We use base 2 because of fast bit arithmetic, identifying the two powers of 2 that x must lie between
-    // Bit anatomy of a double : 1 s | 11 E | 52 f
-    // 1 bit for sign, 11 bits for exponent, 52 bits for floating point decimal
-    // double x = (-1)^s (1 + f) 2^{E - 1023}
-    if (x == 1.0) return 0.0;
-    if (x <= 0.0) return NAN;
-    if (x != x) return NAN;
+    if (x == 1.0)      return 0.0;
+    if (x <= 0.0)      return NAN;
+    if (x != x)        return NAN;
     if (x == INFINITY) return INFINITY;
 
-    uint64_t bits64;
-    uint64_t exponent;
-    uint64_t fraction;
-    uint64_t exponent_mask =   0b011111111111ULL << 52;
-    uint64_t fraction_mask = ~(0b111111111111ULL << 52);
-    memcpy(&bits64, &x, sizeof(x));
-    exponent = bits64 & exponent_mask;
-    fraction = bits64 & fraction_mask;
+    uint64_t bits;
+    memcpy(&bits, &x, sizeof(x));
+    uint64_t exponent = bits & EXPONENT_MASK;
+    uint64_t fraction = bits & FRACTION_MASK;
 
-    int bias = 0b001111111111ULL;  // 1023
+    Scalar m;
+    int k;
+    Size zeros = 0;
 
     // subnormal: double x = (-1)^s    f  2^{ -1022}
     // otherwise: double x = (-1)^s (1+f) 2^{E-1023}
-    Scalar m;
-    bool subnormal = (exponent == 0);
-    if (subnormal) {
-        Size counter = 0;  // num leading zeros
-        for (Size i = 52; i-- > 0;) {
-            if (fraction >> i == 0b1) break;
-            counter++;
-        }
-        fraction <<= counter + 1;  // +1 to shift beyond 1.0.
-        fraction &= ~(0b1ULL << 52);
-        fraction |= 0b001111111111ULL << 52;  // representing the 1.0
-        bias += counter;
-        memcpy(&m, &fraction, sizeof(fraction));
-    } else {
-        Scalar lower;
-        memcpy(&lower, &exponent, sizeof(exponent));
-        m = x / lower;
+    if (exponent == 0) {
+        zeros = leading_zero_count(fraction) - 12;  // ignore non-f bits
+        fraction <<= zeros + 1;       // shift f beyond 1.0
     }
-
-    int k = (exponent >> 52) - bias;
-    if (m > 4.0 / 3.0) {
-        m /= 2;
+    fraction |= EXPONENT_BIAS << 52;  // reset bias (2^{E-1023} = 2^0 = 1)
+    memcpy(&m, &fraction, sizeof(fraction));
+    k = (int)(exponent >> 52) - (int)EXPONENT_BIAS - (int)zeros;
+    
+    if (m >  4.0 / 3.0) {
+        m /= 2.0;
         k += 1;
     }
-    Scalar f = m - 1.0;
-    Scalar lnm = maclaurin_ln_xp1(f, 100);
-    Scalar lnx = lnm + k * LN2;
+    Scalar lnm = maclaurin_ln_xp1_div_xm1((m-1.0)/(m+1.0), 10);
+    Scalar lnx = lnm + k*LN2;  // ln(x) = ln(m2^k) = ln(m) + kln(2)
     return lnx;
 }
-
-
-
 
 
 // Scalar scalar_exp(Scalar x) {
@@ -120,7 +104,21 @@ void approximate_sqrt2() {  // Newton's method
 // 0.69314718055994561929  approximated  100 iter
 // 0.69314718055994561929  approximated 1000 iter
 void approximate_ln2() {
-    Scalar ln_sqrt2 = maclaurin_ln_xp1(SQRT2-1.0, 100);  // ln(x+1) = ln(sqrt(2)) ==> x = sqrt(2) - 1
-    Scalar ln2 = 2 * ln_sqrt2;
-    printf("%.20lf", ln2);
+    Scalar ln2 = maclaurin_ln_xp1_div_xm1(1.0/3.0, 100);
+    printf("%.20lf\n", ln2);
 }
+
+// Scalar ln_sqrt2 = maclaurin_ln_xp1(SQRT2-1.0, 100);  // ln(x+1) = ln(sqrt(2)) ==> x = sqrt(2) - 1
+// static inline Scalar maclaurin_ln_xp1(Scalar x, Size iter) {
+//     assert(iter >= 1);
+//     assert((-0.5 < x) && (x < 0.5));
+//     Scalar ln_xp1 = 0.0;
+//     Scalar xn = 1.0;
+//     Scalar sign = -1.0;
+//     for (Size i = 1; i < iter; i++) {
+//         sign *= -1;
+//         xn *= x;
+//         ln_xp1 += sign * 1.0/i * xn;
+//     }
+//     return ln_xp1;
+// }
