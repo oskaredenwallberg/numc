@@ -36,12 +36,7 @@ void test_scalar_log_exact(Scalar x, Scalar expected) {
 }
 
 void test_scalar_log_approx(Scalar x, Scalar expected) {
-    // log_test( fabs(scalar_log(x) - expected) <= 1e-15 );
-    Scalar actual = scalar_log(x);
-    Scalar error = fabs(actual - expected);
-
-    printf("\nx=%.17g, error=%.17g\n", x, error);
-    log_test(error <= 1e-15);
+    log_test( fabs(scalar_log(x) - expected) <= 1e-15 );
 }
 
 void test_scalar_log_nan()    { test_scalar_log_isnan(NAN);                        }
