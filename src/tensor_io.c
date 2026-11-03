@@ -14,7 +14,7 @@ void tensor_print(const Tensor *t) {  // convert to tensor_print_full
     Size ndim = t->ndim;
     Size cols = t->shape[ndim-1];
     Size rows = t->size / cols;
-    Size buffer[ndim];
+    Size buffer[ndim];  // shape buffer, odometer
     memset(buffer, 0, sizeof buffer);
 
     for (Index i = 0; i < rows; i++) {
