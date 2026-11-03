@@ -6,29 +6,31 @@
 #include "tensor_io.h"
 #include "scalar_math.h"
 
+
+
 int main() {
     // create a tensor
-    // Tensor t = tensor_zeros((Size[]){ 2, 2, 4, 3 }, 4);
-    // Tensor u = tensor_full((Size[]){ 2, 2, 3 }, 3, 4.456767987986532732178 );
+    Tensor t = tensor_zeros((Size[]){ 10, 20, 40, 30 }, 4);
+    Tensor u = tensor_full((Size[]){ 2, 2, 3 }, 3, 4.456767987986532732178 );
     Tensor v = tensor_array(
         (Scalar[]){ 1, 2, 3, 4, 5, 6 }, 
         (Size[]){ 2, 3 }, 2
     );
 
     // print the tensor
-    // tensor_print(&t);
-    // tensor_print(&u);
+    tensor_print(&t);
+    tensor_print(&u);
     tensor_print(&v);
 
     // free the tensor
-    // tensor_free(&t);
-    // tensor_free(&u);
+    tensor_free(&t);
+    tensor_free(&u);
     tensor_free(&v);
 
     // approximate_sqrt2();
     // approximate_ln2();
-    Scalar lnx = scalar_log(8.0/3.0);
-    printf("%.20f\n", lnx);
+    // Scalar lnx = scalar_log(8.0/3.0);
+    // printf("%.20f\n", lnx);
 
     return 0;
 };

@@ -3,6 +3,15 @@
 
 #include "tensor.h"
 
+typedef enum {
+    VALS,
+    DOTS,
+    SKIP,
+} PrintAction;
+
+#define MAX_ROWS 4
+#define MAX_COLS 3
+
 // printing
 void tensor_print(const Tensor *t);
 void tensor_print_data(const Tensor *t);
